@@ -185,9 +185,14 @@ class NodeIf extends Node {
         this.then = then;
         this._else = _else;
     }
+}
 
-    public void setCondition(Node condition) {
-        this.condition = condition;
+class NodeThen extends Node{
+    Node statement = null;
+
+    public NodeThen(Token token, Node statement) {
+        super(token);
+        this.statement = statement;
     }
 }
 

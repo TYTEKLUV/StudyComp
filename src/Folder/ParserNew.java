@@ -59,6 +59,14 @@ public class ParserNew {
                 System.out.println("Ожидался конец файла, а встречено " + currentToken.getName());
                 System.out.println("Строка " + currentToken.getLine() + " Позиция " + currentToken.getPosition());
                 break;
+            case 11:
+                System.out.println("Ожидалось 'then', а встречено " + currentToken.getName());
+                System.out.println("Строка " + currentToken.getLine() + " Позиция " + currentToken.getPosition());
+                break;
+            case 12:
+                System.out.println("Ожидался оператор, а встречено " + currentToken.getName());
+                System.out.println("Строка " + currentToken.getLine() + " Позиция " + currentToken.getPosition());
+                break;
             default:
                 break;
         }
@@ -160,6 +168,13 @@ public class ParserNew {
                 error(6);
                 return null;
             }
+        } else if(currentToken.getType()==KEY_WORD){
+            if (currentToken.getName().equals("if")){
+                Node node = ifStatement();
+                return node;
+            }
+            error(12);
+            return null;
         } else if (currentToken.getName().equals(";")){
             nextToken();
             return null;
@@ -167,6 +182,112 @@ public class ParserNew {
             error(6);
             return null;
         }
+    }
+
+    private Node ifStatement() {
+        Token token = currentToken;
+        nextToken();
+        Node condition = booleanExpression();
+        nextToken();
+        if (!currentToken.getName().equals("then")){
+            error(11);
+        }
+        Node then = thenBody();
+        if (currentToken.getName().equals("else")){
+            Node elseNode = elseBody();
+            if (currentToken.getName().equals(";")){
+                return new NodeIf(token,condition,then,elseNode);
+            } else{
+                error(2);
+                return null;
+            }
+        } else if (currentToken.getName().equals(";")){
+            return new NodeIf(token,condition,then,null);
+        } else {
+            error(2);
+            return null;
+        }
+
+    }
+
+    private Node elseBody() {
+        Token token = currentToken;
+        nextToken();
+        if (currentToken.getName().equals("begin")){
+            Node node = compound_statement();
+            return new NodeThen(token,node);
+        } else {
+            Node node = statement();
+            return new NodeThen(token,node);
+        }
+    }
+
+    private Node thenBody() {
+        Token token = currentToken;
+        nextToken();
+        if (currentToken.getName().equals("begin")){
+            Node node = compound_statement();
+            return new NodeThen(token,node);
+        } else {
+            Node node = statement();
+            return new NodeThen(token,node);
+        }
+    }
+
+    public Node booleanFactor(){
+        Token token = currentToken;
+        if (currentToken.getType()==BOOLEAN){
+            nextToken();
+            return new NodeBinaryOperation(token);
+        } else if (currentToken.getName().equals("not")){
+            nextToken();
+            return new NodeBinaryOperation(null, token, factor());
+        } else if(currentToken.getName().equals("(")) {
+            nextToken();
+            Node node = booleanExpression();
+            if (currentToken.getName().equals(")")) {
+                return node;
+            } else {
+                error(9);
+                return null;
+            }
+        } else {
+            Node node = expression();
+            if (currentToken.getName().equals(">") || currentToken.getName().equals("<") || currentToken.getName().equals("<=") || currentToken.getName().equals("<=") || currentToken.getName().equals("<>") || currentToken.getName().equals("=")){
+                token = currentToken;
+                nextToken();
+                node = new NodeBinaryOperation(node,token,expression());
+                return node;
+            }
+            error(8);
+            return null;
+        }
+    }
+
+    public Node booleanTerm(){
+        if (currentToken.getName().equals("(")){
+            nextToken();
+            Node node = booleanFactor();
+            if (currentToken.getName().equals(")")) {
+                return node;
+            } else {
+                error(9);
+                return null;
+            }
+        } else {
+            Node node = booleanFactor();
+            return node;
+        }
+    }
+
+    private Node booleanExpression() {
+        Node node = booleanTerm();
+        while(currentToken.getName().equals("and") || currentToken.getName().equals("or")){
+            Token token = currentToken;
+            nextToken();
+            node = new NodeBinaryOperation(node, token, booleanTerm());
+        }
+        return node;
     }
 
     private Node call_statement() {

@@ -2,8 +2,11 @@ program z2;
 var
     a,c:integer;
     b:real;
-
 begin
-    a:=4+3-1;
+    if (a>b) then
+        c:=4
+    else
+        e:=5;
+    a:=4+3-1 div 2;
     b:=r+4*7;
 end.
