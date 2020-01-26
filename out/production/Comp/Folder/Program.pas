@@ -1,23 +1,23 @@
-program z2;
-var
-    a,c:integer;
-    b:real;
-begin
-    if (a>b) or (a>c) then
-        c:=4
-    else
-        e:=5;
-    a:=4+3-1 div 2;
-    b:=r+4*7;
-    while a>b do
+program z1;
+    var
+        a,b,i:integer;
+        r,num:real;
     begin
-        a:=4;
-        b:=a mod 3;
-        if (a>b) or (a>c) then
-                c:=4;
-    end;
-    for i:=1 to 4 do
-    begin
-        lol:=12;
-    end;
-end.
+        a:=10-4+b*c;
+        b:=16 div a;
+        if a>3 then
+            r:=1.23
+        else
+            num:=1.24+1.2;
+        while (a>3) or (b<7) do
+            begin
+                a:=a-1;
+                b:=b+1;
+            end;
+        for i:=1 to 13 do
+            b:=b+i;
+        write(a,f);
+        writeln(num,'number');
+        read(a);
+        readln(b,c,r,num);
+    end.

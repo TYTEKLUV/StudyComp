@@ -13,7 +13,7 @@ public class Main {
         String text = Files.readString(Path.of(file.toURI()));
 
         Tokenizer tokenizer = new Tokenizer(text);
-        ParserNew parser = new ParserNew(tokenizer);
+        Parser parser = new Parser(tokenizer);
         Node tree = parser.start();
         System.out.println(tree);
 

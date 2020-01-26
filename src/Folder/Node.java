@@ -80,10 +80,10 @@ class NodeType extends Node {
     @Override
     public String toString() {
         String text = "";
-        text = "└─"+ token.getName() + "\n";
+        text = "└─ TYPE "+ token.getName() + "\n";
         lvl++;
         for (Node node : list) {
-            text += indent() + node.token.getName() + "\n";
+            text += indent() + "└─ IDENTIFIER " + node.token.getName() + "\n";
         }
         lvl--;
         return text;
@@ -108,10 +108,10 @@ class NodeBinaryOperation extends Node {
     @Override
     public String toString() {
         String text = "";
-        text = "└─"+ token.getName() + "\n";
+        text = "OPERATION "+ token.getName() + "\n";
         lvl++;
-        text += indent() + left.toString();
-        text += indent() + right.toString();
+        text += indent() + "└─ " +left.toString();
+        text += indent() + "└─ " +right.toString();
         lvl--;
         return text;
     }
@@ -143,10 +143,12 @@ class NodeBlock extends Node {
     @Override
     public String toString() {
         String text = "";
+        lvl++;
         if (description != null) {
-            text+= description.toString();
+            text+= indent() + description.toString();
         }
-        text+=indent() + compound_statement.toString()+"\n";
+        text+=indent() + "└─ " + compound_statement.toString()+"\n";
+        lvl--;
         return (text);
     }
 }
@@ -159,7 +161,12 @@ class NodeVariable extends Node {
     @Override
     public String toString() {
         String text = "";
-        text ="└─"+ token.getName() + "\n";
+        if (token.getType()==TokenType.IDENTIFIER){
+            text = "VARIABLE ";
+        } else {
+            text = "CONST ";
+        }
+        text += token.getName() + "\n";
         return text;
     }
 }
@@ -185,6 +192,21 @@ class NodeIf extends Node {
         this.then = then;
         this._else = _else;
     }
+
+    @Override
+    public String toString() {
+        String text = "";
+        text = token.getName()+ "\n";
+        lvl++;
+        text += indent() + "└─ CONDITION" + "\n";
+        lvl++;
+        text+= indent() + "└─ " + condition.toString();
+        lvl--;
+        text += indent() + "└─ " + then.toString();
+        text += indent() + "└─ " + _else.toString();
+        lvl--;
+        return text;
+    }
 }
 
 class NodeBody extends Node{
@@ -193,6 +215,16 @@ class NodeBody extends Node{
     public NodeBody(Token token, Node statement) {
         super(token);
         this.statement = statement;
+    }
+
+    @Override
+    public String toString() {
+        String text;
+        text = token.getName() + "\n";
+        lvl++;
+        text += indent() + "└─ " + statement.toString();
+        lvl--;
+        return text;
     }
 }
 
@@ -210,7 +242,12 @@ class NodeDeclaration extends Node {
 
     public String toString() {
         String text = "";
-
+        text = "└─ " + token.getName()+ "\n";
+        lvl++;
+        for (Node node:blocks) {
+            text += indent() + node.toString();
+        }
+        lvl--;
         return text;
     }
 }
@@ -238,10 +275,10 @@ class NodeCompoundStatement extends Node {
     @Override
     public String toString() {
         String text = "";
-        text = "└─"+  token.getName() + "\n";
+        text = token.getName() + "\n";
         lvl++;
         for (Node node: statement_list) {
-            text+=indent() + node.toString();
+            text+= indent() + "└─ "+ node.toString();
         }
         lvl--;
         return text;
@@ -269,6 +306,18 @@ class NodeCall extends Node {
         this.parameters = parameters;
     }
 
+    @Override
+    public String toString() {
+        String text = "";
+        text = token.getName() + "\n";
+        lvl++;
+        for (Node node: parameters) {
+            text+= indent() + "└─ "+ node.toString();
+        }
+        lvl--;
+        return text;
+    }
+
 }
 
 class NodeWhile extends Node{
@@ -279,6 +328,20 @@ class NodeWhile extends Node{
         super(token);
         this.condition = condition;
         this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        String text = "";
+        text = token.getName()+ "\n";
+        lvl++;
+        text += indent() + "└─ CONDITION" + "\n";
+        lvl++;
+        text+= indent() + "└─ " + condition.toString();
+        lvl--;
+        text += indent() + "└─ BODY " + body.toString();
+        lvl--;
+        return text;
     }
 }
 
@@ -292,6 +355,18 @@ class NodeFor extends Node{
         this.start = start;
         this.end = end;
         this.body = body;
+    }
+
+    @Override
+    public String toString() {
+        String text = "";
+        text = token.getName()+ "\n";
+        lvl++;
+        text+= indent() + "└─ " + start.toString();
+        text+= indent() + "└─ " + end.toString();
+        text += indent() + "└─ BODY " + body.toString();
+        lvl--;
+        return text;
     }
 }
 
