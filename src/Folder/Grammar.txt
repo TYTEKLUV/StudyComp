@@ -1,0 +1,41 @@
+program: PROGRAM ID SEMI block DOT
+
+block: declarations compound_statement
+
+declarations: (VAR (variable_declaration SEMI)+)? procedure_declaration*
+
+procedure_declaration: PROCEDURE ID (LPAREN formal_parameter_list RPAREN)? SEMI block SEMI
+
+formal_params_list: formal_parameters
+                  | formal_parameters SEMI formal_parameters
+
+formal_parameters: ID (COMMA ID)* COLON type
+
+type: INT
+    | REAL
+    | BOOLEAN
+    | CHAR
+    | STRING
+
+compound_statement: BEGIN statement_list END
+
+statement_list: statement
+              | statement SEMI statement_list
+
+statement: compound_statement
+         | call_statement
+         | assignment_statement
+         | empty
+
+call: ID LRAREN (expr (COMMA expr)*)? RPAREN
+
+assignment_statement: ID ASSIGN expr
+
+expr: term ((PLUS|MINUS) term)*
+
+term: factor ((MUL | MOD | INT_DIV | INT_MOD) factor)*
+
+factor: (PLUS|MINUS) factor
+      | INT | REAL
+      | LPAREN expr RPAREN
+      | ID

@@ -1,0 +1,6 @@
+1	1	KEY_WORD	while
+1	7	BOOLEAN	true
+1	12	KEY_WORD	do
+2	5	KEY_WORD	begin
+4	5	KEY_WORD	end
+4	8	SEPARATOR	;

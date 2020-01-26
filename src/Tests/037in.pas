@@ -1,0 +1,2 @@
+readln(a);
+writeln(a);
