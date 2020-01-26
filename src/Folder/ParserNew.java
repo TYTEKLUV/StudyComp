@@ -1,5 +1,6 @@
 package Folder;
 
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 import static Folder.TokenType.*;
@@ -86,7 +87,7 @@ public class ParserNew {
     }
 
 
-    public boolean checkType(TokenType type){
+    private boolean checkType(TokenType type){
         if (currentToken.getType()==type){
             nextToken();
             return true;
@@ -95,7 +96,7 @@ public class ParserNew {
         }
     }
 
-    public boolean checkName(String name){
+    private boolean checkName(String name){
         if (currentToken.getName().equals(name)){
             nextToken();
             return true;
@@ -171,7 +172,7 @@ public class ParserNew {
         } else if (currentToken.getType()==IDENTIFIER){
             nextToken();
             if (currentToken.getName().equals("(")){
-                return call_statement();
+                return new NodeCall(token,call_statement());
             } else if(currentToken.getName().equals(":=")){
                 Token tokenOp = currentToken;
                 nextToken();
@@ -182,16 +183,24 @@ public class ParserNew {
             }
         } else if(currentToken.getType()==KEY_WORD){
             if (currentToken.getName().equals("if")){
-                Node node = ifStatement();
-                return node;
+                return ifStatement();
             }
             if (currentToken.getName().equals("while")){
-                Node node = whileStatement();
-                return node;
+                return whileStatement();
             }
             if (currentToken.getName().equals("for")){
-                Node node = forStatement();
-                return node;
+                return forStatement();
+            }
+            if (currentToken.getName().equals("write") || currentToken.getName().equals("writeln")){
+                nextToken();
+                if (currentToken.getName().equals("(")) {
+                    return new NodeCall(token, call_statement());
+                } else {
+                    error(4);
+                }
+            }
+            if (currentToken.getName().equals("read") || currentToken.getName().equals("readln")){
+                return readStatement();
             }
             error(12);
             return null;
@@ -203,6 +212,30 @@ public class ParserNew {
             return null;
         }
     }
+
+    private Node readStatement() {
+        Token token = currentToken;
+        nextToken();
+        if (!checkName("(")){
+            error(4);
+        }
+        ArrayList<Node> list = new ArrayList<>();
+        list.add(identifier());
+        while (currentToken.getName().equals(",")){
+            nextToken();
+            list.add(identifier());
+        }
+        if (checkName(")")){
+            return new NodeCall(token,list);
+        } else {
+            error(9);
+            return null;
+        }
+    }
+
+//    private Node writeStatement() {
+//        return null;
+//    }
 
     private Node forStatement() {
         Token token = currentToken;
@@ -284,7 +317,7 @@ public class ParserNew {
 
     }
 
-    public Node booleanFactor(){
+    private Node booleanFactor(){
         Token token = currentToken;
         if (currentToken.getType()==BOOLEAN){
             nextToken();
@@ -303,7 +336,7 @@ public class ParserNew {
             }
         } else {
             Node node = expression();
-            if (currentToken.getName().equals(">") || currentToken.getName().equals("<") || currentToken.getName().equals("<=") || currentToken.getName().equals("<=") || currentToken.getName().equals("<>") || currentToken.getName().equals("=")){
+            if (currentToken.getName().equals(">") || currentToken.getName().equals("<") || currentToken.getName().equals("<=") || currentToken.getName().equals(">=") || currentToken.getName().equals("<>") || currentToken.getName().equals("=")){
                 token = currentToken;
                 nextToken();
                 node = new NodeBinaryOperation(node,token,expression());
@@ -314,7 +347,7 @@ public class ParserNew {
         }
     }
 
-    public Node booleanTerm(){
+    private Node booleanTerm(){
         if (currentToken.getName().equals("(")){
             nextToken();
             Node node = booleanFactor();
@@ -326,8 +359,7 @@ public class ParserNew {
                 return null;
             }
         } else {
-            Node node = booleanFactor();
-            return node;
+            return booleanFactor();
         }
     }
 
@@ -341,8 +373,7 @@ public class ParserNew {
         return node;
     }
 
-    private Node call_statement() {
-        Token token = currentToken;
+    private ArrayList<Node> call_statement() {
         nextToken();
         if (checkName(")")){
             return null;
@@ -354,14 +385,14 @@ public class ParserNew {
             param.add(expression());
         }
         if (checkName(")")){
-            return new NodeCall(token,param);
+            return param;
         } else {
             error(9);
             return null;
         }
     }
 
-    public Node expression(){
+    private Node expression(){
         Node node = term();
         while(currentToken.getName().equals("+") || currentToken.getName().equals("-")){
             Token token = currentToken;
@@ -371,7 +402,7 @@ public class ParserNew {
         return node;
     }
 
-    public Node term(){
+    private Node term(){
         Node node = factor();
         while(currentToken.getName().equals("*") || currentToken.getName().equals("/") || currentToken.getName().equals("div") || currentToken.getName().equals("mod")){
             Token token = currentToken;
@@ -381,7 +412,7 @@ public class ParserNew {
         return node;
     }
 
-    public Node factor(){
+    private Node factor(){
         Token token = currentToken;
         if (currentToken.getType()==INT || currentToken.getType()==REAL || currentToken.getType()==CHAR || currentToken.getType()==STRING || currentToken.getType()==IDENTIFIER){
             nextToken();
@@ -488,8 +519,7 @@ public class ParserNew {
         }
         if (checkName(":")){
             Token token = type();
-            NodeType node = new NodeType(token,list);
-            return node;
+            return new NodeType(token,list);
         } else {
             error(3);
             return null;
