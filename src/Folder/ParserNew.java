@@ -67,6 +67,10 @@ public class ParserNew {
                 System.out.println("Ожидался оператор, а встречено " + currentToken.getName());
                 System.out.println("Строка " + currentToken.getLine() + " Позиция " + currentToken.getPosition());
                 break;
+            case 13:
+                System.out.println("Ожидалось 'do', а встречено " + currentToken.getName());
+                System.out.println("Строка " + currentToken.getLine() + " Позиция " + currentToken.getPosition());
+                break;
             default:
                 break;
         }
@@ -173,6 +177,10 @@ public class ParserNew {
                 Node node = ifStatement();
                 return node;
             }
+            if (currentToken.getName().equals("while")){
+                Node node = whileStatement();
+                return node;
+            }
             error(12);
             return null;
         } else if (currentToken.getName().equals(";")){
@@ -184,17 +192,44 @@ public class ParserNew {
         }
     }
 
+    private Node whileStatement() {
+        Token token = currentToken;
+        nextToken();
+        Node condition = booleanExpression();
+        if (!currentToken.getName().equals("do")){
+            error(13);
+        }
+        Node node = body();
+        if (currentToken.getName().equals(";")){
+            return new NodeWhile(token,condition,node);
+        } else {
+            error(2);
+            return null;
+        }
+    }
+
+    private Node body() {
+        Token token = currentToken;
+        nextToken();
+        if (currentToken.getName().equals("begin")){
+            Node node = compound_statement();
+            return new NodeBody(token,node);
+        } else {
+            Node node = statement();
+            return new NodeBody(token,node);
+        }
+    }
+
     private Node ifStatement() {
         Token token = currentToken;
         nextToken();
         Node condition = booleanExpression();
-        nextToken();
         if (!currentToken.getName().equals("then")){
             error(11);
         }
-        Node then = thenBody();
+        Node then = body();
         if (currentToken.getName().equals("else")){
-            Node elseNode = elseBody();
+            Node elseNode = body();
             if (currentToken.getName().equals(";")){
                 return new NodeIf(token,condition,then,elseNode);
             } else{
@@ -208,30 +243,6 @@ public class ParserNew {
             return null;
         }
 
-    }
-
-    private Node elseBody() {
-        Token token = currentToken;
-        nextToken();
-        if (currentToken.getName().equals("begin")){
-            Node node = compound_statement();
-            return new NodeThen(token,node);
-        } else {
-            Node node = statement();
-            return new NodeThen(token,node);
-        }
-    }
-
-    private Node thenBody() {
-        Token token = currentToken;
-        nextToken();
-        if (currentToken.getName().equals("begin")){
-            Node node = compound_statement();
-            return new NodeThen(token,node);
-        } else {
-            Node node = statement();
-            return new NodeThen(token,node);
-        }
     }
 
     public Node booleanFactor(){
@@ -269,6 +280,7 @@ public class ParserNew {
             nextToken();
             Node node = booleanFactor();
             if (currentToken.getName().equals(")")) {
+                nextToken();
                 return node;
             } else {
                 error(9);

@@ -187,10 +187,10 @@ class NodeIf extends Node {
     }
 }
 
-class NodeThen extends Node{
+class NodeBody extends Node{
     Node statement = null;
 
-    public NodeThen(Token token, Node statement) {
+    public NodeBody(Token token, Node statement) {
         super(token);
         this.statement = statement;
     }
@@ -269,6 +269,17 @@ class NodeCall extends Node {
         this.parameters = parameters;
     }
 
+}
+
+class NodeWhile extends Node{
+    Node condition;
+    Node body;
+
+    public NodeWhile(Token token, Node condition, Node body) {
+        super(token);
+        this.condition = condition;
+        this.body = body;
+    }
 }
 
 
