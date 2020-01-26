@@ -282,5 +282,18 @@ class NodeWhile extends Node{
     }
 }
 
+class NodeFor extends Node{
+    Node start;
+    Node end;
+    Node body;
+
+    public NodeFor(Token token, Node start, Node end, Node body) {
+        super(token);
+        this.start = start;
+        this.end = end;
+        this.body = body;
+    }
+}
+
 
 

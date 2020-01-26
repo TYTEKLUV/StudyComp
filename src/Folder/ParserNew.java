@@ -71,6 +71,14 @@ public class ParserNew {
                 System.out.println("Ожидалось 'do', а встречено " + currentToken.getName());
                 System.out.println("Строка " + currentToken.getLine() + " Позиция " + currentToken.getPosition());
                 break;
+            case 14:
+                System.out.println("Ожидалось ':=', а встречено " + currentToken.getName());
+                System.out.println("Строка " + currentToken.getLine() + " Позиция " + currentToken.getPosition());
+                break;
+            case 15:
+                System.out.println("Ожидалось 'to', а встречено " + currentToken.getName());
+                System.out.println("Строка " + currentToken.getLine() + " Позиция " + currentToken.getPosition());
+                break;
             default:
                 break;
         }
@@ -181,6 +189,10 @@ public class ParserNew {
                 Node node = whileStatement();
                 return node;
             }
+            if (currentToken.getName().equals("for")){
+                Node node = forStatement();
+                return node;
+            }
             error(12);
             return null;
         } else if (currentToken.getName().equals(";")){
@@ -188,6 +200,33 @@ public class ParserNew {
             return null;
         } else {
             error(6);
+            return null;
+        }
+    }
+
+    private Node forStatement() {
+        Token token = currentToken;
+        nextToken();
+        Node var = identifier();
+        if (!currentToken.getName().equals(":=")){
+            error(14);
+        }
+        Token oper = currentToken;
+        nextToken();
+        Node rihgt = expression();
+        if (!currentToken.getName().equals("to")){
+            error(15);
+        }
+        nextToken();
+        Node end = expression();
+        if (!currentToken.getName().equals("do")){
+            error(13);
+        }
+        Node node = body();
+        if (currentToken.getName().equals(";")){
+            return new NodeFor(token,new NodeBinaryOperation(var,oper,rihgt),end,node);
+        } else {
+            error(2);
             return null;
         }
     }
