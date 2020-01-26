@@ -1,0 +1,2 @@
+# StudyComp
+For Pascal
