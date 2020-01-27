@@ -3,7 +3,7 @@ package Folder;
 import java.util.ArrayList;
 
 public class Node {
-    public static int lvl = 0;
+    static int lvl = 0;
     Token token = null;
 
     public String indent(){
@@ -92,8 +92,8 @@ class NodeType extends Node {
 
 class NodeBinaryOperation extends Node {
 
-    Node left = null;
-    Node right = null;
+    private Node left = null;
+    private Node right = null;
 
     public NodeBinaryOperation(Token token) {
         super(token);
@@ -178,9 +178,9 @@ class NodeConst extends Node {
 }
 
 class NodeIf extends Node {
-    Node condition = null;
-    Node then = null;
-    Node _else = null;
+    private Node condition = null;
+    private Node then = null;
+    private Node _else = null;
 
     public NodeIf(Token token) {
         super(token);
@@ -210,7 +210,7 @@ class NodeIf extends Node {
 }
 
 class NodeBody extends Node{
-    Node statement = null;
+    private Node statement = null;
 
     public NodeBody(Token token, Node statement) {
         super(token);
@@ -321,8 +321,8 @@ class NodeCall extends Node {
 }
 
 class NodeWhile extends Node{
-    Node condition;
-    Node body;
+    private Node condition;
+    private Node body;
 
     public NodeWhile(Token token, Node condition, Node body) {
         super(token);
@@ -346,9 +346,9 @@ class NodeWhile extends Node{
 }
 
 class NodeFor extends Node{
-    Node start;
-    Node end;
-    Node body;
+    private Node start;
+    private Node end;
+    private Node body;
 
     public NodeFor(Token token, Node start, Node end, Node body) {
         super(token);
