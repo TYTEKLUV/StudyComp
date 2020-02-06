@@ -1,2 +1,1 @@
-a:=b+4;
-b:=15-check;
+'hello'#10'kek'

@@ -1,2 +1,1 @@
-param:= 10 * a;
-check:='Hello'
+$123fa

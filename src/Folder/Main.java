@@ -13,16 +13,16 @@ public class Main {
         String text = Files.readString(Path.of(file.toURI()));
 
         Tokenizer tokenizer = new Tokenizer(text);
-        Parser parser = new Parser(tokenizer);
-        Node tree = parser.start();
-        System.out.println(tree);
+//        Parser parser = new Parser(tokenizer);
+//        Node tree = parser.start();
+//        System.out.println(tree);
 
-//        Token token = tokenizer.next();
-//
-//        while (token.getType()!=TokenType.EOF) {
-//            System.out.println(token);
-//            token = tokenizer.next();
-//        }
+        Token token = tokenizer.next();
+
+        while (token.getType()!=TokenType.EOF) {
+            System.out.println(token);
+            token = tokenizer.next();
+        }
 
     }
 }

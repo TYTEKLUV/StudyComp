@@ -1,2 +1,6 @@
-if (a>4) and (a<17) then
-    b:=32;
+ksf
+12
+123.4 //fwfwfыаыпццкаfgwrgwrf
+//ls,dfrfer;lfe;,ыадаыцкжпкц
+//
+re

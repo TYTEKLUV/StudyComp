@@ -12,10 +12,11 @@ public class Tester {
     public static void main(String[] args) throws IOException {
         String newText;
         int ok=0;
+        int num=24;
 
         ArrayList<Token> tokens = new ArrayList();
         String split[];
-        for (int i = 1; i<101; i++){
+        for (int i = 1; i<=num; i++){
             boolean check = true;
             String fileName = String.format("%03din.pas",i);
             File file = new File("src/Tests/"+fileName);
@@ -32,20 +33,24 @@ public class Tester {
             while (token.getType()!=TokenType.EOF) {
                 if (sc.hasNext()){
                     split = sc.nextLine().split("\t");
-                    if (Integer.parseInt(split[0]) != token.getLine()) {
-                        check = false;
-                    }
-                    if (Integer.parseInt(split[1]) != token.getPosition()) {
-                        check = false;
-                    }
-                    if (!split[2].equals(token.getType().name())) {
-                        System.out.println(split[2]+" "+token.getType().name());
-                        check = false;
-                    }
-                    if (!split[3].equals(token.getName())) {
-                        System.out.println(split[3]+" "+token.getName());
-                        check = false;
-                    }
+                   // if (split[0].lastIndexOf("Ошибка")==-1) {
+                        if (Integer.parseInt(split[0]) != token.getLine()) {
+                            check = false;
+                        }
+                        if (Integer.parseInt(split[1]) != token.getPosition()) {
+                            check = false;
+                        }
+                        if (!split[2].equals(token.getType().name())) {
+                            System.out.println(split[2] + " " + token.getType().name());
+                            check = false;
+                        }
+                        if (!split[3].equals(token.getName())) {
+                            System.out.println(split[3] + " " + token.getName());
+                            check = false;
+                        }
+                   // } else {
+
+                   // }
 
                 }
                 token = tokenizer.next();
@@ -59,6 +64,6 @@ public class Tester {
             }
 
         }
-        System.out.println("Результат: "+ok+"/100");
+        System.out.println("Результат: "+ok+"/"+num);
     }
 }

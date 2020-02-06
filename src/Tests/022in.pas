@@ -1,2 +1,8 @@
-if a>=c then
-    a:=c;
+iden {sdfsd
+fsdf
+
+fsdfsf
+sfs
+sf
+fsfsf}
+lol

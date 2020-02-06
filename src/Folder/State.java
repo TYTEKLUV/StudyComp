@@ -14,5 +14,21 @@ public enum State {
     PLUS,
     MINUS,
     //DOUBLE_OPERATION
-    POINT
+    POINT,
+    STRING_LATTICE,
+    STRING_LATTICE2,
+    REAL_SECOND,
+    REAL_E,
+    REAL_E2,
+    REAL_E3,
+    CHECK_LATTICE,
+    AMPERSAND,
+    PERCENT,
+    DOLLAR,
+    CURLY_COMMENT,
+    LPAREN,
+    PAREN_COMMENT,
+    BINARY,
+    OCTAL,
+    HEX
 }

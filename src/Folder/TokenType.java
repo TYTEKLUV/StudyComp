@@ -12,5 +12,8 @@ public enum TokenType {
     STRING,
     BOOLEAN,
     EXCEPTION,
-    EOF
+    EOF,
+    BIN_INT,
+    OCTAL_INT,
+    HEX_INT
 }

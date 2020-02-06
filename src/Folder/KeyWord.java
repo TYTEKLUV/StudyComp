@@ -39,7 +39,51 @@ public enum KeyWord {
     OF("of"),
     LENGTH("length"),
     CHAR("char"),
-    ABS("abs");
+    ABS("abs"),
+    AS("as"),
+    AUTO("auto"),
+    CLASS("class"),
+    CONSTRUCTOR("constructor"),
+    DESTRUCTOR("destructor"),
+    EVENT("event"),
+    EXCEPT("excepr"),
+    EXTENSIONMETHOD("extensionmethod"),
+    FILE("file"),
+    FINALIZATOR("finalizator"),
+    FINALLY("finally"),
+    FOREACH("foreach"),
+    GOTO("goto"),
+    IMPLEMENTATION("implementation"),
+    IN("in"),
+    INHERITED("inherited"),
+    INITIALIZATION("initialization"),
+    INTERFACE("interface"),
+    IS("is"),
+    LABEL("label"),
+    LOCK("lock"),
+    LOOP("loop"),
+    NIL("nil"),
+    OPERATOR("operator"),
+    PROPERTY("property"),
+    RAISE("raise"),
+    SEALED("sealed"),
+    SET("set"),
+    SEQUENCE("sequence"),
+    SHL("shl"),
+    SHR("shr"),
+    SIZEOF("sizeof"),
+    TEMPLATE("template"),
+    TRY("try"),
+    TYPEOF("typeof"),
+    USES("uses"),
+    USING("using"),
+    WHERE("where"),
+    WITH("with"),
+    XOR("xor");
+
+
+
+
 
 
 

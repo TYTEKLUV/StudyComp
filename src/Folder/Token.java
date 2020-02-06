@@ -108,6 +108,26 @@ class TokenInteger extends Token{
     }
 }
 
+class TokenHex extends Token{
+
+    private String value;
+
+    public TokenHex(int line, int position, TokenType type, String name) {
+        super(line, position, type, name);
+        value = name;
+    }
+}
+
+class TokenEReal extends Token{
+
+    private String value;
+
+    public TokenEReal(int line, int position, TokenType type, String name) {
+        super(line, position, type, name);
+        value = name;
+    }
+}
+
 class TokenOperation extends Token{
 
     private Operation value;

@@ -1,2 +1,1 @@
-if (a>=c) then
-    writeln(a);
+a:=1------3
